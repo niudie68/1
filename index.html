@@ -3,68 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大阪情報 & 経済ダッシュボード</title>
+    <title>大阪リアルタイムダッシュボード</title>
     <style>
-        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; color: #333; }
-        .container { max-width: 900px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h1 { grid-column: 1 / -1; text-align: center; color: #2c3e50; font-size: 1.5rem; margin-bottom: 20px; }
-        h2 { border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-top: 0; font-size: 1.2rem; color: #3498db; }
-        .data-point { font-size: 1.8rem; font-weight: bold; margin: 15px 0; color: #2c3e50; }
-        .sub-text { font-size: 0.9rem; color: #7f8c8d; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { text-align: left; padding: 8px; border-bottom: 1px solid #eee; }
-        .highlight { color: #e74c3c; font-weight: bold; }
+        :root { --primary: #2563eb; --bg: #f8fafc; --card: #ffffff; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; }
+        .dashboard { max-width: 1000px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: var(--card); padding: 20px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h2 { font-size: 1rem; color: #64748b; margin: 0 0 10px 0; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; }
+        .value { font-size: 1.8rem; font-weight: bold; color: #1e293b; margin: 10px 0; }
+        .unit { font-size: 0.9rem; color: #94a3b8; margin-left: 5px; }
+        .loading { color: #94a3b8; font-size: 0.8rem; font-style: italic; }
+        table { width: 100%; font-size: 0.9rem; margin-top: 10px; border-collapse: collapse; }
+        td { padding: 5px 0; border-bottom: 1px solid #f8fafc; }
+        .status-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; background: #e0f2fe; color: #0369a1; font-size: 0.7rem; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
-<h1>リアルタイム・ダッシュボード (2026/05/09)</h1>
+<div style="text-align:center; margin-bottom: 30px;">
+    <h1>Real-time Data Panel</h1>
+    <p id="update-time" style="color: #64748b;"></p>
+</div>
 
-<div class="container">
-    <!-- 気象データ -->
+<div class="dashboard">
+    <!-- 大阪の天気 -->
     <div class="card">
+        <div class="status-tag">Weather</div>
         <h2>大阪の現在気温</h2>
-        <div class="data-point">16.4℃</div>
-        <p class="sub-text">観測地点: 大阪市内 (09日 03:00現在)</p>
+        <div id="temp" class="value">--<span class="unit">℃</span></div>
+        <div id="weather-desc" class="loading">Loading...</div>
     </div>
 
+    <!-- 降水確率 -->
     <div class="card">
-        <h2>週間降水確率 (大阪)</h2>
-        <table>
-            <tr><th>5/9(土)</th><td>10%</td></tr>
-            <tr><th>5/10(日)</th><td>20%</td></tr>
-            <tr><th>5/11(月)</th><td>40%</td></tr>
-            <tr><th>5/12(火)</th><td>10%</td></tr>
-            <tr><th>5/13(水)</th><td>0%</td></tr>
-            <tr><th>5/14(木)</th><td>10%</td></tr>
-            <tr><th>5/15(金)</th><td>30%</td></tr>
+        <div class="status-tag">Precipitation</div>
+        <h2>一週間の降水確率</h2>
+        <table id="rain-table">
+            <tr><td colspan="2" class="loading">データを取得中...</td></tr>
         </table>
     </div>
 
-    <!-- 為替データ -->
+    <!-- 円相場 -->
     <div class="card">
-        <h2>円相場 (10,000円換算)</h2>
-        <p><strong>対アメリカドル:</strong></p>
-        <div class="data-point">$63.83</div>
-        <p><strong>対人民元:</strong></p>
-        <div class="data-point">¥462.10</div>
-        <p class="sub-text">参考レート: 1ドル=156.66円 / 1元=21.64円</p>
+        <div class="status-tag">Exchange</div>
+        <h2>10,000円を換算</h2>
+        <p style="font-size:0.8rem; margin:0;">USD (米ドル)</p>
+        <div id="usd-rate" class="value">--<span class="unit">$</span></div>
+        <p style="font-size:0.8rem; margin:0;">CNY (人民元)</p>
+        <div id="cny-rate" class="value">--<span class="unit">元</span></div>
     </div>
 
-    <!-- 資産・コモディティ -->
+    <!-- ビットコイン -->
     <div class="card">
-        <h2>ビットコイン (BTC)</h2>
-        <div class="data-point">12,567,302 円</div>
-        <p class="sub-text">1BTCあたりのリアルタイム価格</p>
+        <div class="status-tag">Crypto</div>
+        <h2>Bitcoin (BTC/JPY)</h2>
+        <div id="btc-price" class="value">--<span class="unit">円</span></div>
+        <div id="btc-change" class="loading">---</div>
     </div>
 
+    <!-- 金相場 -->
     <div class="card">
-        <h2>金相場 (Gold)</h2>
-        <div class="data-point">26,181 円/g</div>
-        <p class="sub-text">小売価格 (田中貴金属参考)</p>
+        <div class="status-tag">Commodity</div>
+        <h2>金小売価格 (参考)</h2>
+        <div id="gold-price" class="value">--<span class="unit">円/g</span></div>
+        <p style="font-size:0.7rem; color:#94a3b8;">※金相場APIは有料が多いため、為替連動の推定値を表示します</p>
     </div>
 </div>
+
+<script>
+    async function updateDashboard() {
+        document.getElementById('update-time').innerText = `最終更新: ${new Date().toLocaleString()}`;
+
+        // 1. 天気API (Open-Meteo)
+        try {
+            const weatherRes = await fetch('https://api.open-meteo.com/v1/forecast?latitude=34.6937&longitude=135.5022&current_weather=true&daily=precipitation_probability_max&timezone=Asia%2FTokyo');
+            const weatherData = await weatherRes.json();
+            document.getElementById('temp').innerHTML = `${weatherData.current_weather.temperature}<span class="unit">℃</span>`;
+            
+            let rainHtml = '';
+            weatherData.daily.time.forEach((date, i) => {
+                const day = date.split('-').slice(1).join('/');
+                rainHtml += `<tr><td>${day}</td><td style="text-align:right">${weatherData.daily.precipitation_probability_max[i]}%</td></tr>`;
+            });
+            document.getElementById('rain-table').innerHTML = rainHtml;
+            document.getElementById('weather-desc').innerText = "大阪市北区付近のデータ";
+        } catch (e) { console.error("Weather error", e); }
+
+        // 2. 仮想通貨API (CoinGecko)
+        try {
+            const cryptoRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=jpy&include_24hr_change=true');
+            const cryptoData = await cryptoRes.json();
+            const btc = cryptoData.bitcoin;
+            document.getElementById('btc-price').innerHTML = `${btc.jpy.toLocaleString()}<span class="unit">円</span>`;
+            document.getElementById('btc-change').innerText = `24h前比: ${btc.jpy_24h_change.toFixed(2)}%`;
+        } catch (e) { console.error("Crypto error", e); }
+
+        // 3. 為替API (ExchangeRate-API)
+        try {
+            const fxRes = await fetch('https://open.er-api.com/v6/latest/JPY');
+            const fxData = await fxRes.json();
+            const usd = (10000 * fxData.rates.USD).toFixed(2);
+            const cny = (10000 * fxData.rates.CNY).toFixed(2);
+            document.getElementById('usd-rate').innerHTML = `${usd}<span class="unit">$</span>`;
+            document.getElementById('cny-rate').innerHTML = `${cny}<span class="unit">元</span>`;
+            
+            // 金相場推定 (国際スポット$2400/oz、1oz=31.1gとして簡易計算)
+            const goldJpy = (2400 / fxData.rates.USD / 31.1).toFixed(0);
+            document.getElementById('gold-price').innerHTML = `${Number(goldJpy).toLocaleString()}<span class="unit">円/g</span>`;
+        } catch (e) { console.error("FX error", e); }
+    }
+
+    // 初回実行
+    updateDashboard();
+    // 5分ごとに更新
+    setInterval(updateDashboard, 300000);
+</script>
 
 </body>
 </html>
