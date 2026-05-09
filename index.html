@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大阪情報 & 経済ダッシュボード</title>
+    <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 900px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { grid-column: 1 / -1; text-align: center; color: #2c3e50; font-size: 1.5rem; margin-bottom: 20px; }
+        h2 { border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-top: 0; font-size: 1.2rem; color: #3498db; }
+        .data-point { font-size: 1.8rem; font-weight: bold; margin: 15px 0; color: #2c3e50; }
+        .sub-text { font-size: 0.9rem; color: #7f8c8d; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { text-align: left; padding: 8px; border-bottom: 1px solid #eee; }
+        .highlight { color: #e74c3c; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<h1>リアルタイム・ダッシュボード (2026/05/09)</h1>
+
+<div class="container">
+    <!-- 気象データ -->
+    <div class="card">
+        <h2>大阪の現在気温</h2>
+        <div class="data-point">16.4℃</div>
+        <p class="sub-text">観測地点: 大阪市内 (09日 03:00現在)</p>
+    </div>
+
+    <div class="card">
+        <h2>週間降水確率 (大阪)</h2>
+        <table>
+            <tr><th>5/9(土)</th><td>10%</td></tr>
+            <tr><th>5/10(日)</th><td>20%</td></tr>
+            <tr><th>5/11(月)</th><td>40%</td></tr>
+            <tr><th>5/12(火)</th><td>10%</td></tr>
+            <tr><th>5/13(水)</th><td>0%</td></tr>
+            <tr><th>5/14(木)</th><td>10%</td></tr>
+            <tr><th>5/15(金)</th><td>30%</td></tr>
+        </table>
+    </div>
+
+    <!-- 為替データ -->
+    <div class="card">
+        <h2>円相場 (10,000円換算)</h2>
+        <p><strong>対アメリカドル:</strong></p>
+        <div class="data-point">$63.83</div>
+        <p><strong>対人民元:</strong></p>
+        <div class="data-point">¥462.10</div>
+        <p class="sub-text">参考レート: 1ドル=156.66円 / 1元=21.64円</p>
+    </div>
+
+    <!-- 資産・コモディティ -->
+    <div class="card">
+        <h2>ビットコイン (BTC)</h2>
+        <div class="data-point">12,567,302 円</div>
+        <p class="sub-text">1BTCあたりのリアルタイム価格</p>
+    </div>
+
+    <div class="card">
+        <h2>金相場 (Gold)</h2>
+        <div class="data-point">26,181 円/g</div>
+        <p class="sub-text">小売価格 (田中貴金属参考)</p>
+    </div>
+</div>
+
+</body>
+</html>
