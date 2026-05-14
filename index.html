@@ -3,96 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>株価チェック・ダッシュボード</title>
+    <title>リアルタイム株価モニター</title>
     <style>
         body {
-            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
-            background-color: #f0f2f5;
-            color: #333;
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            background-color: #1a1a1b; /* 暗めの背景で見やすく */
+            color: #ffffff;
             margin: 0;
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        h1 { margin-bottom: 20px; font-size: 1.5rem; }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            width: 100%;
-            max-width: 900px;
-        }
-        .card {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             text-align: center;
-            transition: transform 0.2s;
-            text-decoration: none;
-            color: inherit;
-            display: block;
         }
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            background-color: #fafafa;
+        h1 { font-size: 1.5rem; margin-bottom: 25px; color: #00d4ff; }
+        .monitor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
-        .code {
-            font-size: 0.9rem;
-            color: #666;
-            display: block;
-            margin-bottom: 5px;
+        .stock-box {
+            background: #2d2d2e;
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid #444;
         }
-        .name {
-            font-weight: bold;
-            font-size: 1.2rem;
-            color: #0056b3;
+        .stock-box h2 {
+            font-size: 1.1rem;
+            margin-top: 0;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
         }
-        .btn-all {
-            margin-top: 30px;
-            padding: 10px 20px;
-            background-color: #333;
-            color: #fff;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 0.9rem;
+        .stock-code { color: #aaa; font-size: 0.9rem; }
+        .chart-img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            background: #fff; /* 画像読み込み前後のチラつき防止 */
+        }
+        .refresh-note {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #888;
         }
     </style>
+    <!-- 5分ごとにページを自動更新する設定 -->
+    <meta http-equiv="refresh" content="300">
 </head>
 <body>
 
-    <h1>銘柄別リアルタイム情報</h1>
+    <h1>株価リアルタイムモニタリング</h1>
 
-    <div class="grid">
+    <div class="monitor-grid">
         <!-- フォーサイド -->
-        <a href="https://www.google.com/finance/quote/2330:TYO" target="_blank" class="card">
-            <span class="code">2330</span>
-            <span class="name">フォーサイド</span>
-        </a>
+        <div class="stock-box">
+            <h2><span>フォーサイド</span> <span class="stock-code">2330.T</span></h2>
+            <img src="https://chart.yahoo.co.jp/?code=2330.T&tm=1d&type=l&log=off&size=m&over=m25,m75&add=v" alt="2330 株価" class="chart-img">
+        </div>
 
         <!-- メディネット -->
-        <a href="https://www.google.com/finance/quote/2370:TYO" target="_blank" class="card">
-            <span class="code">2370</span>
-            <span class="name">メディネット</span>
-        </a>
+        <div class="stock-box">
+            <h2><span>メディネット</span> <span class="stock-code">2370.T</span></h2>
+            <img src="https://chart.yahoo.co.jp/?code=2370.T&tm=1d&type=l&log=off&size=m&over=m25,m75&add=v" alt="2370 株価" class="chart-img">
+        </div>
 
         <!-- インスペック -->
-        <a href="https://www.google.com/finance/quote/6656:TYO" target="_blank" class="card">
-            <span class="code">6656</span>
-            <span class="name">インスペック</span>
-        </a>
+        <div class="stock-box">
+            <h2><span>インスペック</span> <span class="stock-code">6656.T</span></h2>
+            <img src="https://chart.yahoo.co.jp/?code=6656.T&tm=1d&type=l&log=off&size=m&over=m25,m75&add=v" alt="6656 株価" class="chart-img">
+        </div>
 
         <!-- ニプロ -->
-        <a href="https://www.google.com/finance/quote/8086:TYO" target="_blank" class="card">
-            <span class="code">8086</span>
-            <span class="name">ニプロ</span>
-        </a>
+        <div class="stock-box">
+            <h2><span>ニプロ</span> <span class="stock-code">8086.T</span></h2>
+            <img src="https://chart.yahoo.co.jp/?code=8086.T&tm=1d&type=l&log=off&size=m&over=m25,m75&add=v" alt="8086 株価" class="chart-img">
+        </div>
     </div>
 
-    <p style="font-size: 0.8rem; color: #777; margin-top: 20px;">
-        ※クリックすると別タブでGoogle Financeのリアルタイム詳細チャートが開きます。
+    <p class="refresh-note">
+        ※画像はYahoo!ファイナンスの1日チャートを表示しています。<br>
+        ※このページは5分ごとに自動更新されます（ブラウザの再読み込みでも最新化されます）。
     </p>
 
 </body>
