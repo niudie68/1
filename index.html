@@ -98,19 +98,31 @@
             document.getElementById('btc-change').innerText = `24h前比: ${btc.jpy_24h_change.toFixed(2)}%`;
         } catch (e) { console.error("Crypto error", e); }
 
-        // 3. 為替API (ExchangeRate-API)
         try {
             const fxRes = await fetch('https://open.er-api.com/v6/latest/JPY');
             const fxData = await fxRes.json();
+        
+            // 1. 為替レートの表示（1万円が何ドル/何元か）
             const usd = (10000 * fxData.rates.USD).toFixed(2);
             const cny = (10000 * fxData.rates.CNY).toFixed(2);
             document.getElementById('usd-rate').innerHTML = `${usd}<span class="unit">$</span>`;
             document.getElementById('cny-rate').innerHTML = `${cny}<span class="unit">元</span>`;
             
-            // 金相場推定 (国際スポット$2400/oz、1oz=31.1gとして簡易計算)
-            const goldJpy = (2400 / fxData.rates.USD / 31.1).toFixed(0);
-            document.getElementById('gold-price').innerHTML = `${Number(goldJpy).toLocaleString()}<span class="unit">円/g</span>`;
-        } catch (e) { console.error("FX error", e); }
+            // 2. 金相場推定の計算
+            const goldUsdPerOz = 2400;     // 国際スポット価格($)
+            const troyOzGram = 31.1035;    // 1トロイオンス(g)
+            const jpyUsdRate = fxData.rates.USD; // 1円あたりのドル（例: 0.0065）
+        
+            // 計算式：(2400ドル ÷ 1円あたりのドル) ÷ 31.1035g
+            // つまり、先にドルを円に直してから、gで割る
+            const goldJpy = Math.round((goldUsdPerOz / jpyUsdRate) / troyOzGram);
+        
+            document.getElementById('gold-price').innerHTML = 
+                `${goldJpy.toLocaleString()}<span class="unit">円/g</span>`;
+        
+        } catch (e) { 
+            console.error("FX error", e); 
+        }
     }
 
     // 初回実行
