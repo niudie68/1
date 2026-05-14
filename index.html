@@ -3,77 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>注視銘柄 株価モニタ</title>
+    <title>株価チェック・ダッシュボード</title>
     <style>
         body {
-            font-family: "Helvetica Neue", Arial, sans-serif;
-            background-color: #f4f7f6;
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
         }
-        h1 { color: #333; margin-bottom: 30px; }
-        .grid-container {
+        h1 { margin-bottom: 20px; font-size: 1.5rem; }
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
             width: 100%;
-            max-width: 1200px;
+            max-width: 900px;
         }
-        .stock-card {
+        .card {
             background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            padding: 15px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             text-align: center;
+            transition: transform 0.2s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
-        .stock-card h2 {
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            background-color: #fafafa;
+        }
+        .code {
+            font-size: 0.9rem;
+            color: #666;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .name {
+            font-weight: bold;
             font-size: 1.2rem;
-            margin-top: 0;
-            color: #555;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
+            color: #0056b3;
         }
-        iframe {
-            border: none;
-            width: 100%;
-            height: 220px; /* ウィジェットの高さに合わせて調整 */
+        .btn-all {
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
 
-    <h1>株式リアルタイム監視</h1>
+    <h1>銘柄別リアルタイム情報</h1>
 
-    <div class="grid-container">
+    <div class="grid">
         <!-- フォーサイド -->
-        <div class="stock-card">
-            <h2>フォーサイド (2330)</h2>
-            <iframe src="https://www.google.com/finance/quote/2330:TYO"></iframe>
-        </div>
+        <a href="https://www.google.com/finance/quote/2330:TYO" target="_blank" class="card">
+            <span class="code">2330</span>
+            <span class="name">フォーサイド</span>
+        </a>
 
         <!-- メディネット -->
-        <div class="stock-card">
-            <h2>メディネット (2370)</h2>
-            <iframe src="https://www.google.com/finance/quote/2370:TYO"></iframe>
-        </div>
+        <a href="https://www.google.com/finance/quote/2370:TYO" target="_blank" class="card">
+            <span class="code">2370</span>
+            <span class="name">メディネット</span>
+        </a>
 
         <!-- インスペック -->
-        <div class="stock-card">
-            <h2>インスペック (6656)</h2>
-            <iframe src="https://www.google.com/finance/quote/6656:TYO"></iframe>
-        </div>
+        <a href="https://www.google.com/finance/quote/6656:TYO" target="_blank" class="card">
+            <span class="code">6656</span>
+            <span class="name">インスペック</span>
+        </a>
 
         <!-- ニプロ -->
-        <div class="stock-card">
-            <h2>ニプロ (8086)</h2>
-            <iframe src="https://www.google.com/finance/quote/8086:TYO"></iframe>
-        </div>
+        <a href="https://www.google.com/finance/quote/8086:TYO" target="_blank" class="card">
+            <span class="code">8086</span>
+            <span class="name">ニプロ</span>
+        </a>
     </div>
 
-    <p style="margin-top: 20px; color: #888; font-size: 0.8rem;">
-        ※Google Financeのデータに基づきます。表示には数分のディレイがある場合があります。
+    <p style="font-size: 0.8rem; color: #777; margin-top: 20px;">
+        ※クリックすると別タブでGoogle Financeのリアルタイム詳細チャートが開きます。
     </p>
 
 </body>
